@@ -1,4 +1,4 @@
-class Account {
+export class Account {
   /*
   id: string, using uuid
   email: string, unique

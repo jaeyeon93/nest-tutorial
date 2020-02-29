@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
-@Controller('accounts')
+@Controller('accountsTest')
 export class AccountsController {
   @Get()
   getAccountsById(): string {
-    return 'GET /accounts method called';
+    return 'GET /accountsTest method called';
   }
 
   @Get(':id')
