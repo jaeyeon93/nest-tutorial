@@ -37,7 +37,12 @@ export class AccountDto {
     this._password = value;
   }
 
-  // of(): Account {
-  //   return new Account(this.getId(), this.getEmail(), this.getPassword())
-  // }
+  of(): Account {
+    console.log(`of method called ${this.getId()} ${this.getEmail()}`);
+    return new Account(this.getId(), this.getEmail(), this.getPassword())
+  }
+
+  temp() {
+    return 'function definition test';
+  };
 }

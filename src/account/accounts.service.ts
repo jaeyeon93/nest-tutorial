@@ -7,7 +7,9 @@ export class AccountService {
   private readonly accounts: Account[] = [];
 
   createAccount(accountDto: AccountDto): AccountDto {
-    console.log(`account dto 전달 `)
+    console.log(`account dto 전달 ${JSON.stringify(accountDto)}`);
+    console.log(typeof accountDto);
+    // console.log(accountDto.of());
     return accountDto;
   }
 
