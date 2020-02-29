@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { AccountService } from './accounts.service';
+import { AccountDto } from '../dto/account.dto';
+import { Account } from './account';
 
 @Controller('accounts')
 export class AccountsController {
@@ -7,10 +9,10 @@ export class AccountsController {
   // @ts-ignore
   constructor(private readonly accountsService: AccountService) {};
 
-  @Get()
-  getAccountsById(): string {
-    return this.accountsService.createAccount();
-  }
+  // @Get()
+  // async getAccountsById(): Promise<Account[]> {
+  //   return this.accountsService.findAllAccount();
+  // }
 
   @Get(':id')
   findById(@Param() params): string {
@@ -18,11 +20,11 @@ export class AccountsController {
     return `2This action returns a ${params.id}`;
   };
 
-  // @Post()
-  // createAccount(@Body()): string {
-  //   console.log(`request : `);
-  //   return `POST /accounts/`
-  // }
+  @Post()
+  createAccount(@Body() accountDto: AccountDto) {
+    const result: AccountDto = this.accountsService.createAccount(accountDto);
+    return JSON.stringify(result);
+  }
 
   @Put(':id')
   updateById(@Param() params): string {
