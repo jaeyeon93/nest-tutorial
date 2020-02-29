@@ -1,4 +1,4 @@
-import { Account } from '../../src/accounts/account';
+import { Account } from '../../src/account/account';
 
 
 describe('Account Test', () => {
