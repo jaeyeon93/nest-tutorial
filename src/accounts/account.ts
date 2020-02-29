@@ -7,26 +7,25 @@ class Account {
   created_at: Date, format : YYYY-MM-DD hh:mm:ss
   updated_at: Date
    */
-   id: string;
-   email: string;
-   password: string;
+ private _id: string;
+ private _email: string;
+ private _password: string;
 
-  constructor(id: string, email: string, password: string) {
-    this.id = id;
-    this.email = email;
-    this.password = password;
+ constructor(id: string, email: string, password: string) {
+   this._id = id;
+   this._email = email;
+   this._password = password;
+ }
+
+  getId(): string {
+    return this._id;
   }
 
-
-  get id(): string {
-    return this.id;
+  getEmail(): string {
+    return this._email;
   }
 
-  get email(): string {
-    return this.email;
-  }
-
-  get password(): string {
-    return this.password;
+  getPassword(): string {
+    return this._password;
   }
 }
