@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 @Controller('accounts')
 export class AccountsController {
@@ -14,7 +14,7 @@ export class AccountsController {
   };
 
   @Post()
-  createAccount(): string {
+  createAccount(@Body()): string {
     console.log(`request : `);
     return `POST /accounts/`
   }
