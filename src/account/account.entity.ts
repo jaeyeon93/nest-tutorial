@@ -1,6 +1,10 @@
 import { AccountDto } from '../dto/account.dto';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-export class AccountEntity {
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+@Entity
+export class Account {
   /*
   id: string, using uuid
   email: string, unique
@@ -9,29 +13,38 @@ export class AccountEntity {
   created_at: Date, format : YYYY-MM-DD hh:mm:ss
   updated_at: Date
    */
- private id: string;
- private email: string;
- private password: string;
 
- constructor(id: string, email: string, password: string) {
-   this.id = id;
-   this.email = email;
-   this.password = password;
- }
+  @PrimaryGeneratedColumn()
+  tempId: number;
 
-  getId(): string {
-    return this.id;
-  }
+   @Column('id')
+   private id: string;
 
-  getEmail(): string {
-    return this.email;
-  }
+   @Column('email')
+   private email: string;
 
-  getPassword(): string {
-    return this.password;
-  }
+   @Column('password')
+   private password: string;
 
-  of(): AccountDto {
-   return new AccountDto(this.getId(), this.getEmail(), this.getPassword());
-  }
+   constructor(id: string, email: string, password: string) {
+     this.id = id;
+     this.email = email;
+     this.password = password;
+   }
+
+    getId(): string {
+      return this.id;
+    }
+
+    getEmail(): string {
+      return this.email;
+    }
+
+    getPassword(): string {
+      return this.password;
+    }
+
+    of(): AccountDto {
+     return new AccountDto(this.getId(), this.getEmail(), this.getPassword());
+    }
 }

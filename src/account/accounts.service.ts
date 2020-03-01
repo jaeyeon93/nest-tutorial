@@ -1,19 +1,20 @@
-import {Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
-import { AccountEntity } from './account.entity';
+import { Account } from './account.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AccountsService {
-  private readonly accounts: AccountEntity[] = [];
+  constructor(@Inject('ACCOUNT_REPOSITORY') private readonly accountRepository: Repository<Account>) {}
 
-  createAccount(accountDto: AccountDto): AccountEntity {
-    const result: boolean = accountDto instanceof AccountDto;
-    console.log(`account ${JSON.stringify(accountDto)}`)
+  private readonly accounts: Account[] = [];
+
+  createAccount(accountDto: AccountDto): Account {
     return accountDto.of();
   }
 
-  findAllAccount(): AccountEntity[] {
-    return this.accounts;
+  async findAll(): Promise<Account[]> {
+    return this.accountRepository.find();
   }
 }
 

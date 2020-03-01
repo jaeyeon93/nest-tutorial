@@ -1,4 +1,4 @@
-import { AccountEntity } from '../account/account.entity';
+import { Account } from '../account/account.entity';
 
 export class AccountDto {
   private id: string;
@@ -37,7 +37,7 @@ export class AccountDto {
     this.password = value;
   }
 
-  of(): AccountEntity {
-    return new AccountEntity(this.getId(), this.getEmail(), this.getPassword())
+  of(): Account {
+    return new Account(this.getId(), this.getEmail(), this.getPassword())
   }
 }
