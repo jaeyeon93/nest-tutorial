@@ -7,9 +7,8 @@ export class AccountService {
   private readonly accounts: Account[] = [];
 
   createAccount(accountDto: AccountDto): AccountDto {
-    console.log(`account dto 전달 ${JSON.stringify(accountDto)}`);
-    console.log(typeof accountDto);
-    // console.log(accountDto.of());
+    const result: boolean = accountDto instanceof AccountDto;
+    console.log(result);
     return accountDto;
   }
 
@@ -17,3 +16,5 @@ export class AccountService {
     return this.accounts;
   }
 }
+
+// https://github.com/nestjs/nest/issues/552 dto => domain 참조
