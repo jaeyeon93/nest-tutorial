@@ -28,9 +28,8 @@ export class AccountsController {
   }
 
   @Put(':id')
-  updateById(@Param() params): string {
-    console.log(`updateById : ${params.id}`);
-    return `PUT /accounts/${params.id}`;
+  async updateById(@Param() params): Promise<string> {
+    return 'await this.accountsService.update(id);'
   }
 
   @Delete(':id')
