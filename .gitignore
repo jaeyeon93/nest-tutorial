@@ -43,3 +43,4 @@ pacakge-lock.json
 .env
 database.providers.ts
 package-lock.json
+ormconfig.json
