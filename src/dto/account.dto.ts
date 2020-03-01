@@ -1,48 +1,43 @@
 import { Account } from '../account/account';
 
 export class AccountDto {
-  private _id: string;
-  private _email: string;
-  private _password: string;
+  private id: string;
+  private email: string;
+  private password: string;
 
   constructor(id: string, email: string, password: string) {
-    this._id = id;
-    this._email = email;
-    this._password = password;
+    this.id = id;
+    this.email = email;
+    this.password = password;
     console.log(`account dto 생성`);
   }
 
   getId(): string {
-    return this._id;
+    return this.id;
   }
 
   getEmail(): string {
-    return this._email;
+    return this.email;
   }
 
   getPassword(): string {
-    return this._password;
+    return this.password;
   }
 
 
   setId(value: string) {
-    this._id = value;
+    this.id = value;
   }
 
   setEmail(value: string) {
-    this._email = value;
+    this.email = value;
   }
 
   setPassword(value: string) {
-    this._password = value;
+    this.password = value;
   }
 
   of(): Account {
-    console.log(`of method called ${this.getId()} ${this.getEmail()}`);
     return new Account(this.getId(), this.getEmail(), this.getPassword())
   }
-
-  temp() {
-    return 'function definition test';
-  };
 }

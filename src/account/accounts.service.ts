@@ -6,10 +6,10 @@ import { Account } from './account';
 export class AccountsService {
   private readonly accounts: Account[] = [];
 
-  createAccount(accountDto: AccountDto): AccountDto {
+  createAccount(accountDto: AccountDto): Account {
     const result: boolean = accountDto instanceof AccountDto;
-    console.log(result);
-    return accountDto;
+    console.log(`account ${JSON.stringify(accountDto)}`)
+    return accountDto.of();
   }
 
   findAllAccount(): Account[] {
