@@ -38,3 +38,8 @@ pacakge-lock.json
 # Test
 
 /test/coverage/
+
+# configure
+.env
+database.providers.ts
+package-lock.json

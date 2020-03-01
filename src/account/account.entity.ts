@@ -1,6 +1,6 @@
 import { AccountDto } from '../dto/account.dto';
 
-export class Account {
+export class AccountEntity {
   /*
   id: string, using uuid
   email: string, unique

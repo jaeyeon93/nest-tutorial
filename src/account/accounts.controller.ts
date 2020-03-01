@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
-import { Account } from './account';
+import { AccountEntity } from './account.entity';
 
 @Controller('accounts')
 export class AccountsController {
@@ -10,7 +10,7 @@ export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {};
 
   // @Get()
-  // async getAccountsById(): Promise<Account[]> {
+  // async getAccountsById(): Promise<AccountEntity[]> {
   //   return this.accountsService.findAllAccount();
   // }
 
@@ -23,7 +23,7 @@ export class AccountsController {
   @Post()
   @UsePipes(new ValidationPipe({transform: true}))
   createAccount(@Body() accountDto: AccountDto) {
-    const result: Account = this.accountsService.createAccount(accountDto);
+    const result: AccountEntity = this.accountsService.createAccount(accountDto);
     return JSON.stringify(result);
   }
 

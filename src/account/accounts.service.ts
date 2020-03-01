@@ -1,18 +1,18 @@
 import {Injectable} from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
-import { Account } from './account';
+import { AccountEntity } from './account.entity';
 
 @Injectable()
 export class AccountsService {
-  private readonly accounts: Account[] = [];
+  private readonly accounts: AccountEntity[] = [];
 
-  createAccount(accountDto: AccountDto): Account {
+  createAccount(accountDto: AccountDto): AccountEntity {
     const result: boolean = accountDto instanceof AccountDto;
     console.log(`account ${JSON.stringify(accountDto)}`)
     return accountDto.of();
   }
 
-  findAllAccount(): Account[] {
+  findAllAccount(): AccountEntity[] {
     return this.accounts;
   }
 }
