@@ -1,13 +1,13 @@
 import {Module} from '@nestjs/common';
 import {AccountsController} from './accounts.controller';
 import {AccountsService} from './accounts.service';
-import {DatabaseModule} from '../config/database.module';
-import {accountProvider} from './account.provider';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Account } from './account.entity';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Account])],
   controllers: [AccountsController],
-  providers: [AccountsService, ...accountProvider],
+  providers: [AccountsService],
   exports: [AccountsService],
 })
 

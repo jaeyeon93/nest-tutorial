@@ -34,8 +34,7 @@ export class AccountsController {
   }
 
   @Delete(':id')
-  deleteById(@Param() params): string {
-    console.log(`Delete by id : ${params.id}`);
-    return `DELETE /accounts/${params.id}`;
+  async deleteById(@Param() params): Promise<void> {
+    return await this.accountsService.remove(params.id);;
   }
 }

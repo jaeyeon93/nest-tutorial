@@ -3,37 +3,28 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-@Entity
+@Entity()
 export class Account {
-  /*
-  id: string, using uuid
-  email: string, unique
-  password: string, 단방향암호화
-  access_token: string, using JWT token
-  created_at: Date, format : YYYY-MM-DD hh:mm:ss
-  updated_at: Date
-   */
-
   @PrimaryGeneratedColumn()
-  tempId: number;
+  id: number;
 
-   @Column('id')
-   private readonly id: string;
+   @Column({length: 40, unique: true})
+   private readonly userId: string;
 
-   @Column('email')
+   @Column({length: 40, unique: true})
    private readonly email: string;
 
-   @Column('password')
+   @Column({length: 256, nullable: false})
    private readonly password: string;
 
-   constructor(id: string, email: string, password: string) {
-     this.id = id;
+   constructor(userId: string, email: string, password: string) {
+     this.userId = userId;
      this.email = email;
      this.password = password;
    }
 
     getId(): string {
-      return this.id;
+      return this.userId;
     }
 
     getEmail(): string {
