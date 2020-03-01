@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { AccountService } from './accounts.service';
+import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account';
 
@@ -7,7 +7,7 @@ import { Account } from './account';
 export class AccountsController {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  constructor(private readonly accountsService: AccountService) {};
+  constructor(private readonly accountsService: AccountsService) {};
 
   // @Get()
   // async getAccountsById(): Promise<Account[]> {

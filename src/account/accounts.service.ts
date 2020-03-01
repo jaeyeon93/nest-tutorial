@@ -3,7 +3,7 @@ import { AccountDto } from '../dto/account.dto';
 import { Account } from './account';
 
 @Injectable()
-export class AccountService {
+export class AccountsService {
   private readonly accounts: Account[] = [];
 
   createAccount(accountDto: AccountDto): AccountDto {
