@@ -14,5 +14,13 @@ describe('Account Test', () => {
     expect(accountDto.getId()).toBe('dto');
     const account: Account = accountDto.of();
     expect(account.getId()).toBe('dto');
-  })
+  });
+
+  test('Account.of() => AccountDto Test', () => {
+      const account: Account = new Account('uuid','email','11111');
+      expect(account.getId()).toBe('uuid');
+      const dto: AccountDto = account.of();
+      expect(dto.getEmail()).toBe('email');
+      expect(dto.getId()).toBe('uuid');
+  });
 });

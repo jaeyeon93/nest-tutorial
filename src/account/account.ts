@@ -1,3 +1,5 @@
+import { AccountDto } from '../dto/account.dto';
+
 export class Account {
   /*
   id: string, using uuid
@@ -27,5 +29,9 @@ export class Account {
 
   getPassword(): string {
     return this._password;
+  }
+
+  of(): AccountDto {
+   return new AccountDto(this.getId(), this.getEmail(), this.getPassword());
   }
 }

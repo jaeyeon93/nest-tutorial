@@ -34,3 +34,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 pacakge-lock.json
+
+# Test
+
+/test/coverage/
