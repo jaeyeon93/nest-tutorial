@@ -1,10 +1,10 @@
 import { AccountDto } from '../dto/account.dto';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Account {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
    @Column({length: 40, unique: true})
    private readonly userId: string;
@@ -14,6 +14,15 @@ export class Account {
 
    @Column({length: 256, nullable: false})
    private readonly password: string;
+
+   @Column({nullable: true})
+   private readonly access_token: string;
+
+   @CreateDateColumn()
+   private created_at: string;
+
+   @UpdateDateColumn()
+   private updated_at: string;
 
    constructor(userId: string, email: string, password: string) {
      this.userId = userId;

@@ -1,19 +1,19 @@
 import { Account } from '../account/account.entity';
 
 export class AccountDto {
-  private id: string;
+  private userId: string;
   private email: string;
   private password: string;
 
-  constructor(id: string, email: string, password: string) {
-    this.id = id;
+  constructor(userId: string, email: string, password: string) {
+    this.userId = userId;
     this.email = email;
     this.password = password;
     console.log(`account dto 생성`);
   }
 
   getId(): string {
-    return this.id;
+    return this.userId;
   }
 
   getEmail(): string {
@@ -26,7 +26,7 @@ export class AccountDto {
 
 
   setId(value: string) {
-    this.id = value;
+    this.userId = value;
   }
 
   setEmail(value: string) {

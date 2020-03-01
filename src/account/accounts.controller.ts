@@ -35,6 +35,6 @@ export class AccountsController {
 
   @Delete(':id')
   async deleteById(@Param() params): Promise<void> {
-    return await this.accountsService.remove(params.id);;
+    return await this.accountsService.remove(params.id);
   }
 }

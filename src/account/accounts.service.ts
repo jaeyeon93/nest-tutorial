@@ -23,10 +23,12 @@ export class AccountsService {
   }
 
   async findOne(id: string): Promise<Account> {
+    console.log(`findOne method called ${id}`);
     return await this.accountsRepository.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
+    console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
   }
 }
