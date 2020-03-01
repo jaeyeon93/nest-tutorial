@@ -5,7 +5,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017",
+    "target": "es2015",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -13,3 +13,5 @@
   },
   "exclude": ["node_modules", "dist"]
 }
+
+// https://vomvoru.github.io/blog/tsconfig-compiler-options-kr/ => explain about tsconfig option
