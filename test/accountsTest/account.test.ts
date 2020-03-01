@@ -1,4 +1,4 @@
-import { Account } from '../../src/account/account';
+import { Account } from '../../src/account/account.entity';
 import { AccountDto } from '../../src/dto/account.dto';
 
 

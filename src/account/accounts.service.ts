@@ -1,20 +1,34 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
-import { Account } from './account';
+import { Account } from './account.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class AccountService {
-  private readonly accounts: Account[] = [];
+export class AccountsService {
+  constructor(
+    @InjectRepository(Account)
+    private readonly accountsRepository: Repository<Account>
+  ) {}
 
-  createAccount(accountDto: AccountDto): AccountDto {
-    const result: boolean = accountDto instanceof AccountDto;
-    console.log(result);
-    return accountDto;
+  async createAccount(accountDto: AccountDto): Promise<Account> {
+    const account: Account = accountDto.of();
+    console.log(`생성된 account : ${JSON.stringify(account)}`);
+    return await this.accountsRepository.save(account);
   }
 
-  findAllAccount(): Account[] {
-    return this.accounts;
+  async findAll(): Promise<Account[]> {
+    console.log(`find all method called`);
+    return await this.accountsRepository.find();
+  }
+
+  async findOne(id: string): Promise<Account> {
+    console.log(`findOne method called ${id}`);
+    return await this.accountsRepository.findOne(id);
+  }
+
+  async remove(id: string): Promise<void> {
+    console.log(`id : ${id} typeof id ${typeof id}`);
+    await this.accountsRepository.delete(id);
   }
 }
-
-// https://github.com/nestjs/nest/issues/552 dto => domain 참조
