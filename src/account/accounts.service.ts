@@ -12,8 +12,9 @@ export class AccountsService {
   ) {}
 
   async createAccount(accountDto: AccountDto): Promise<Account> {
-    console.log(`createAccount method called`);
-    return accountDto.of();
+    const account: Account = accountDto.of();
+    console.log(`생성된 account : ${JSON.stringify(account)}`);
+    return await this.accountsRepository.save(account);
   }
 
   async findAll(): Promise<Account[]> {
@@ -21,8 +22,8 @@ export class AccountsService {
     return await this.accountsRepository.find();
   }
 
-  findOne(id: string): Promise<Account> {
-    return this.accountsRepository.findOne(id);
+  async findOne(id: string): Promise<Account> {
+    return await this.accountsRepository.findOne(id);
   }
 
   async remove(id: string): Promise<void> {

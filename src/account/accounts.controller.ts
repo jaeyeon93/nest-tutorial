@@ -15,9 +15,9 @@ export class AccountsController {
   }
 
   @Get(':id')
-  findById(@Param() params): string {
+  async findById(@Param() params): Promise<Account> {
     console.log(params.id);
-    return `2This action returns a ${params.id}`;
+    return await this.accountsService.findOne(params.id);
   };
 
   @Post()
