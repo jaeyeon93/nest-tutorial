@@ -22,8 +22,8 @@ export class AccountsController {
 
   @Post()
   @UsePipes(new ValidationPipe({transform: true}))
-  createAccount(@Body() accountDto: AccountDto) {
-    const result: Account = this.accountsService.createAccount(accountDto);
+  async createAccount(@Body() accountDto: AccountDto) {
+    const result: Account = await this.accountsService.createAccount(accountDto);
     return JSON.stringify(result);
   }
 

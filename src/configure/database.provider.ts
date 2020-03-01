@@ -1,5 +1,6 @@
 import {createConnection} from 'typeorm';
 
+// createConnection returns Promise.
 export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
@@ -17,3 +18,4 @@ export const databaseProviders = [
     }).then(() => console.log(`database connection success`)).catch((err) => console.log(`err ${err}`)),
   },
 ];
+

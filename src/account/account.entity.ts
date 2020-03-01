@@ -18,13 +18,13 @@ export class Account {
   tempId: number;
 
    @Column('id')
-   private id: string;
+   private readonly id: string;
 
    @Column('email')
-   private email: string;
+   private readonly email: string;
 
    @Column('password')
-   private password: string;
+   private readonly password: string;
 
    constructor(id: string, email: string, password: string) {
      this.id = id;
