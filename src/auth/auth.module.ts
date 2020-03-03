@@ -16,6 +16,7 @@ import { AuthController } from './auth.controller';
       signOptions: {expiresIn: '300s'},
     }),
   ],
+  controllers: [AuthController],
   providers: [AuthService, JwtStrategy, AuthController],
   exports: [AuthService],
 })
