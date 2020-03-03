@@ -26,10 +26,10 @@ export class AccountsController {
   }
 
   @Put(':id')
-  async updateById(@Param() params, @Body() data): Promise<string> {
+  async updateById(@Param() params, @Body() data): Promise<Account> {
     console.log(typeof data);
     const updatedAccount: Account = await this.accountsService.updateAccount(params.id, data.email, data.password);
-    return data;
+    return updatedAccount;
   }
 
   @Delete(':id')

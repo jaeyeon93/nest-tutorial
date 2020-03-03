@@ -26,7 +26,8 @@ export class AccountsService {
   async updateAccount(id: string, email: string, password: string): Promise<Account> {
     const before: Account = await this.findOne(id);
     const temp: AccountDto = before.of().update(email, password);
-    return await this.accountsRepository.save(temp.of());
+    await this.accountsRepository.update(id, temp.of());
+    return await this.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
