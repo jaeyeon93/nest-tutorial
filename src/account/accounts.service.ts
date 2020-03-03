@@ -34,4 +34,8 @@ export class AccountsService {
     console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
   }
+
+  async findByEmail(email: string): Promise<Account> {
+    return await this.accountsRepository.findOne({where: {email}});
+  }
 }

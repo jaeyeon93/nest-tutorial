@@ -36,4 +36,9 @@ export class AccountsController {
   async deleteById(@Param() params): Promise<void> {
     return await this.accountsService.remove(params.id);
   }
+
+  @Get('email/:email')
+  async findByEmail(@Param() params): Promise<Account> {
+    return await this.accountsService.findByEmail(params.email);
+  }
 }
