@@ -3,13 +3,16 @@ import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AccountsRepository } from './accounts.repository';
 
 @Injectable()
 export class AccountsService {
-  constructor(
-    @InjectRepository(Account)
-    private readonly accountsRepository: Repository<Account>
-  ) {}
+  // constructor(
+  //   @InjectRepository(Account)
+  //   private readonly accountsRepository: Repository<Account>
+  // ) {}
+
+  constructor(private readonly accountsRepository: AccountsRepository) {};
 
   async createAccount(accountDto: AccountDto): Promise<Account> {
     const account: Account = accountDto.of();
