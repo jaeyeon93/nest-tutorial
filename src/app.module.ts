@@ -6,6 +6,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import {ConfigModule} from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [AppController],
@@ -21,6 +22,7 @@ import {ConfigModule} from '@nestjs/config';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {
