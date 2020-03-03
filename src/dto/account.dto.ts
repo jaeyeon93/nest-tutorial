@@ -12,6 +12,13 @@ export class AccountDto {
     console.log(`account dto 생성`);
   }
 
+  update(email: string, password: string) {
+    console.log(`update method called on accountdto`);
+    this.setEmail(email);
+    this.setPassword(password);
+    return this;
+  }
+
   getId(): string {
     return this.userId;
   }
