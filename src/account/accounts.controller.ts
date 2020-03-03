@@ -1,12 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 
 @Controller('accounts')
 export class AccountsController {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
   constructor(private readonly accountsService: AccountsService) {};
 
   @Get()
@@ -28,8 +26,10 @@ export class AccountsController {
   }
 
   @Put(':id')
-  async updateById(@Param() params): Promise<string> {
-    return 'await this.accountsService.update(id);'
+  async updateById(@Param() params, @Body() data): Promise<string> {
+    console.log(typeof data);
+    const updatedAccount: Account = await this.accountsService.updateAccount(params.id, data.email, data.password);
+    return data;
   }
 
   @Delete(':id')

@@ -1,17 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { AccountsRepository } from './accounts.repository';
 
 @Injectable()
 export class AccountsService {
-  // constructor(
-  //   @InjectRepository(Account)
-  //   private readonly accountsRepository: Repository<Account>
-  // ) {}
-
   constructor(private readonly accountsRepository: AccountsRepository) {};
 
   async createAccount(accountDto: AccountDto): Promise<Account> {
@@ -28,6 +21,12 @@ export class AccountsService {
   async findOne(id: string): Promise<Account> {
     console.log(`findOne method called ${id}`);
     return await this.accountsRepository.findOne(id);
+  }
+
+  async updateAccount(id: string, email: string, password: string): Promise<Account> {
+    const before: Account = await this.findOne(id);
+    const temp: AccountDto = before.of().update(email, password);
+    return await this.accountsRepository.save(temp.of());
   }
 
   async remove(id: string): Promise<void> {
