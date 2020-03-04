@@ -7,28 +7,10 @@ import { LocalAuthGuard } from './local-auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('token')
-  async crateToken(): Promise<any> {
-    return await this.authService.createToken();
-  }
-
-  // @UseGuards(LocalAuthGuard)
-  // @Get('login')
-  // async login(@Query('email') email, @Query('password') password): Promise<any> {
-  //   console.log(`GET /auth/login email ${email} password : ${password}`);
-  //   return await this.authService.login(email, password);
-  // }
-
   @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req): Promise<any> {
-    console.log(req.user);
-    return await this.authService.login(req.user.email, req.user.password);
-  }
-
-  @Post('test')
+  @Get('login')
   async test(@Request() req): Promise<any> {
-    console.log(req.body);
-    return JSON.stringify(req.body);
+    console.log(req.query);
+    return await this.authService.login(req.query.email, req.query.password);
   }
 }

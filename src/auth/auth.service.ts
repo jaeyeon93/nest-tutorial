@@ -22,7 +22,9 @@ export class AuthService {
 
   async validateAccount(payload: JwtPayload): Promise<any> {
     console.log(`auth에서 validate account호출`);
+    console.log(`auth에서 payload ${JSON.stringify(payload)}`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
+    console.log(`account ${account}`);
     if (account && account.getPassword() == payload.password) {
       const {getPassword, ...result} = account;
       return result;
