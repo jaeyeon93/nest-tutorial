@@ -4,6 +4,7 @@ import {Account} from '../account/account.entity';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { JwtStrategy } from './jwt.strategy';
+import { ResponseDto } from '../dto/responseDto';
 
 @Injectable()
 export class AuthService {
@@ -24,16 +25,12 @@ export class AuthService {
 
   // GET /accounts/:id를 하게되면 Token안에 있는 uuid와 parameter로 전달되는 id를 비교 검증해줘야한다.
   async getAccountById(inputId: string, originId: string) {
-    if (this.compareUserId(inputId, originId))
+    console.log(originId == inputId);
+    console.log(originId);
+    console.log(inputId);
+    if (!this.compareUserId(inputId, originId))
       throw new UnauthorizedException('유저가 다릅니다.');
-    const account: Account = await this.accountsService.findOne(originId);
-    return {
-      "accessToken": this.jwtService.sign({'email': account.getEmail(), 'password': account.getPassword()}, {expiresIn: '300s'}),
-      "created_at": account.getCreatedDate(),
-      "email": account.getEmail(),
-      "id": originId,
-      "updated_at": account.getUpdateDate()
-    }
+    return new ResponseDto(await this.accountsService.findOne(originId));
   }
 
   compareUserId(inputId: string, orginId: string): boolean {

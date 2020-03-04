@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
+import { ResponseDto } from '../dto/responseDto';
 
 @Injectable()
 export class AccountsService {
@@ -23,13 +24,11 @@ export class AccountsService {
     return await this.accountsRepository.findOne(id);
   }
 
-  async updateAccount(email: string, password: string): Promise<Account> {
+  async updateAccount(email: string, password: string): Promise<ResponseDto> {
     const before: Account = await this.findByEmail(email);
     const temp: AccountDto = before.of().update(email, password);
     await this.accountsRepository.update(temp.getId(), temp.of());
-    console.log(`temp.of() ${JSON.stringify(temp.of())}`);
-    console.log(`temp.id : ${temp.getId()}`)
-    return await this.findByEmail(email);
+    return new ResponseDto(await this.findByEmail(email));
   }
 
   async remove(id: string): Promise<void> {

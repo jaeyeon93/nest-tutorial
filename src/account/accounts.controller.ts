@@ -37,12 +37,12 @@ export class AccountsController {
     return JSON.stringify(result);
   }
 
-  @Put(':id')
-  async updateById(@Param() params, @Body() data): Promise<Account> {
-    console.log(typeof data);
-    const updatedAccount: Account = await this.accountsService.updateAccount(data.email, data.password);
-    return updatedAccount;
-  }
+  // @Put(':id')
+  // async updateById(@Param() params, @Body() data): Promise<Account> {
+  //   console.log(typeof data);
+  //   const updatedAccount: Account = await this.accountsService.updateAccount(data.email, data.password);
+  //   return updatedAccount;
+  // }
 
   @Delete(':id')
   async deleteById(@Param() params): Promise<void> {
