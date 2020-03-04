@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';

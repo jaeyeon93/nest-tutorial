@@ -21,17 +21,17 @@ export class AuthService {
   }
 
   async validateAccount(payload: JwtPayload): Promise<any> {
+    console.log(`auth에서 validate account호출`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
-    console.log(`validateAccount에서 account ${JSON.stringify(account)}`);
     if (account && account.getPassword() == payload.password) {
       const {getPassword, ...result} = account;
-      console.log(`auth service에서 result ${JSON.stringify(result)}`);
       return result;
     }
     return null;
   }
 
   async login(email: string, password: string) {
+    console.log(`auth에서 login호출`);
     const payload = {email, password}
     return {
       email,
@@ -39,4 +39,5 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     }
   }
+
 }
