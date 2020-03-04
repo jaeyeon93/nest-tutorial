@@ -16,7 +16,7 @@ export class Account {
    private readonly password: string;
 
    @Column({nullable: true})
-   private readonly access_token: string;
+   private readonly accessToken: string;
 
    @CreateDateColumn()
    private created_at: string;
@@ -31,7 +31,7 @@ export class Account {
    }
 
     getId(): string {
-      return this.userId;
+      return this.id;
     }
 
     getEmail(): string {
@@ -40,6 +40,14 @@ export class Account {
 
     getPassword(): string {
       return this.password;
+    }
+
+    getCreatedDate(): string {
+     return this.created_at;
+    }
+
+    getUpdateDate(): string {
+     return this.updated_at;
     }
 
     of(): AccountDto {

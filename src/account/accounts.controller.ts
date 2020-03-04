@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
@@ -28,12 +40,17 @@ export class AccountsController {
   @Put(':id')
   async updateById(@Param() params, @Body() data): Promise<Account> {
     console.log(typeof data);
-    const updatedAccount: Account = await this.accountsService.updateAccount(params.id, data.email, data.password);
+    const updatedAccount: Account = await this.accountsService.updateAccount(data.email, data.password);
     return updatedAccount;
   }
 
   @Delete(':id')
   async deleteById(@Param() params): Promise<void> {
     return await this.accountsService.remove(params.id);
+  }
+
+  @Get('email/:email')
+  async findByEmail(@Param() params): Promise<Account> {
+    return await this.accountsService.findByEmail(params.email);
   }
 }
