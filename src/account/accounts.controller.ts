@@ -13,8 +13,8 @@ import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 import { ResponseDto } from '../dto/responseDto';
-import { LocalAuthGuard } from '../auth/local-auth.guard';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { LocalAuthGuard } from '../auth/strategy/local-auth.guard';
+import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
 
 @Controller('accounts')
 export class AccountsController {
