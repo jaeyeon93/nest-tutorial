@@ -13,6 +13,8 @@ export class AuthService {
 
   // 실제 전달한 비밀번호와 DB에 있는 account에 있는 비밀번호를 서로 검증.
   async validateAccount(payload: JwtPayload): Promise<any> {
+    console.log(`auth.service에서 validateAccount를 시도`);
+    console.log(`payload ${JSON.stringify(payload)}`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
     if (account && account.getPassword() == payload.password) {
       const {getPassword, ...result} = account;
@@ -29,15 +31,6 @@ export class AuthService {
       email,
       // eslint-disable-next-line @typescript-eslint/camelcase
       access_token: this.jwtService.sign(payload),
-    }
-  }
-
-  async createToken() {
-    const account: JwtPayload = {email: 'jwt-email', password: 'jwt-password'};
-    const accessToken = this.jwtService.sign(account);
-    return {
-      expiresIn: 3600,
-      accessToken,
     }
   }
 }

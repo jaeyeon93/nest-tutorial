@@ -7,7 +7,10 @@ import { JwtPayload } from './jwt-payload.interface';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
-    super();
+    super({
+      usernameField: 'email',
+      password: 'password',
+    });
   }
 
   // @UseGuard에서('local')을 Strategy로 선택한 controller에 대해서 동작

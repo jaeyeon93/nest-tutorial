@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards, Request, Req, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards, Request, Req, Put, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -12,14 +12,14 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Get('login')
   async login(@Request() req): Promise<any> {
-    console.log(req.query);
     return await this.authService.login(req.query.email, req.query.password);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('account')
-  getAccount(@Request() req) {
-    return req.user;
+  @Get(':id')
+  async getAccount(@Param() params) {
+    const account = await this.accountsService.findOne(params.id);
+    return account;
   }
 
   @UseGuards(JwtAuthGuard)

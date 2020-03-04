@@ -15,9 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtPayload, uuid: string) {
+    console.log(`uuid : ${uuid}`);
     console.log(`jwt.strategy에서 전달받은 payload ${JSON.stringify(payload)}`);
     const account = await this.authService.validateAccount(payload);
+    console.log(`validateuser의 결과 ${JSON.stringify(account)}`);
     if (!account)
       throw new UnauthorizedException();
     return account;
