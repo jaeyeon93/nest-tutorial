@@ -28,11 +28,11 @@ export class AuthController {
     return await this.authService.login(req.query.email, req.query.password);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get(':id')
-  // async getAccount(@Request() req): Promise<ResponseDto> {
-  //   return await this.authService.getAccountById(req.params.id, req.user.id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getAccount(@Request() req): Promise<ResponseDto> {
+    return await this.authService.getAccountById(req.params.id, req.user.id);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')

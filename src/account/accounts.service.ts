@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
@@ -8,8 +8,9 @@ import { AuthService } from '../auth/auth.service';
 @Injectable()
 export class AccountsService {
   constructor(
-    private readonly accountsRepository: AccountsRepository,
-    private readonly authService: AuthService
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  private readonly accountsRepository: AccountsRepository
   ) {};
 
   async createAccount(accountDto: AccountDto): Promise<Account> {

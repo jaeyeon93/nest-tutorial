@@ -17,31 +17,29 @@ import { Account } from './account.entity';
 import { JwtStrategy } from '../auth/jwt.strategy';
 import { ResponseDto } from '../dto/responseDto';
 import { LocalStrategy } from '../auth/local.strategy';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {};
 
-  @Get()
+  @Get('all')
   async getAccountsById(): Promise<Account[]> {
     return await this.accountsService.findAll();
   }
 
-  // @Get(':id')
-  // async findById(@Param() params): Promise<Account> {
-  //   console.log(params.id);
-  //   return await this.accountsService.findOne(params.id);
-  // };
-
-  @UseGuards(LocalStrategy)
-  @Get('')
+  @UseGuards(LocalAuthGuard)
+  @Get()
   async login(@Request() req): Promise<any> {
+    console.log(`accounts호출`);
     return await this.accountsService.login(req.query.email, req.query.password);
   }
 
-  @UseGuards(JwtStrategy)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Request() req): Promise<ResponseDto> {
+    console.log(`id ${req.params.id}`);
     return await this.accountsService.getAccountById(req.params.id, req.user.id);
   };
 
