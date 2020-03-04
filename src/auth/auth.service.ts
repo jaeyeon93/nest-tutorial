@@ -23,8 +23,8 @@ export class AuthService {
   }
 
   // GET /accounts/:id를 하게되면 Token안에 있는 uuid와 parameter로 전달되는 id를 비교 검증해줘야한다.
-  async match(inputId: string, originId: string) {
-    if (inputId != originId)
+  async getAccountById(inputId: string, originId: string) {
+    if (this.compareUserId(inputId, originId))
       throw new UnauthorizedException('유저가 다릅니다.');
     const account: Account = await this.accountsService.findOne(originId);
     return {
@@ -34,6 +34,12 @@ export class AuthService {
       "id": originId,
       "updated_at": account.getUpdateDate()
     }
+  }
+
+  compareUserId(inputId: string, orginId: string): boolean {
+    if (inputId != orginId)
+      return false;
+    return true;
   }
 
   // 이전에 검증들이 끝나면 email로 사용자를 구별하고 access_token을 발급. jwtService.sign이 사용자인증을 의미. 여기서 토큰생성한다.

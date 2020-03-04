@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Post, Query, UseGuards, Request, Req, Put, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  Request,
+  Req,
+  Put,
+  Param,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -18,12 +30,14 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getAccount(@Request() req) {
-    return await this.authService.match(req.params.id, req.user.id);
+    return await this.authService.getAccountById(req.params.id, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('update')
   async update(@Request() req) {
+    if (this.authService.compareUserId(req.paras.id, req.user.id))
+      throw new UnauthorizedException("수정권한이 없습니다.");
     const updatedUser = await this.accountsService.updateAccount(req.body.email, req.body.password);
     return updatedUser;
   }

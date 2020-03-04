@@ -50,6 +50,10 @@ export class Account {
      return this.updated_at;
     }
 
+    getAccessToken(): string {
+     return this.accessToken;
+    }
+
     of(): AccountDto {
      return new AccountDto(this.getId(), this.getEmail(), this.getPassword());
     }
