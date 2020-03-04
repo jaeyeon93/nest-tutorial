@@ -7,8 +7,8 @@ export class ResponseDto {
   private readonly id: string;
   private readonly updated_at: string;
 
-  constructor(account: Account) {
-    this.accessToken = account.getAccessToken();
+  constructor(account: Account, accessToken: string) {
+    this.accessToken = accessToken;
     this.created_at = account.getCreatedDate();
     this.email = account.getEmail();
     this.id = account.getId();
