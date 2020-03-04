@@ -25,12 +25,12 @@ export class AuthService {
   }
 
   // GET /accounts/:id를 하게되면 Token안에 있는 uuid와 parameter로 전달되는 id를 비교 검증해줘야한다.
-  async getAccountById(inputId: string, originId: string) {
-    if (!this.compareUserId(inputId, originId))
-      throw new UnauthorizedException('유저가 다릅니다.');
-    const account: Account = await this.accountsService.findOne(originId);
-    return new ResponseDto(account, this.makeAccessToken(account));
-  }
+  // async getAccountById(inputId: string, originId: string) {
+  //   if (!this.compareUserId(inputId, originId))
+  //     throw new UnauthorizedException('유저가 다릅니다.');
+  //   const account: Account = await this.accountsService.findOne(originId);
+  //   return new ResponseDto(account);
+  // }
 
   makeAccessToken(account: Account) {
     return this.jwtService.sign({'email': account.getEmail(), 'password': account.getPassword()});

@@ -16,7 +16,7 @@ export class Account {
    private readonly password: string;
 
    @Column({nullable: true})
-   private readonly accessToken: string;
+   private accessToken: string;
 
    @CreateDateColumn()
    private created_at: string;
@@ -52,6 +52,10 @@ export class Account {
 
     getAccessToken(): string {
      return this.accessToken;
+    }
+
+    setAccessToken(value: string) {
+      this.accessToken = value;
     }
 
     of(): AccountDto {

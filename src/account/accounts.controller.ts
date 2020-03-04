@@ -6,7 +6,7 @@ import {
   Logger,
   Param,
   Post,
-  Put,
+  Put, Request,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -14,6 +14,9 @@ import {
 import { AccountsService } from './accounts.service';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
+import { JwtStrategy } from '../auth/jwt.strategy';
+import { ResponseDto } from '../dto/responseDto';
+import { LocalStrategy } from '../auth/local.strategy';
 
 @Controller('accounts')
 export class AccountsController {
@@ -24,10 +27,22 @@ export class AccountsController {
     return await this.accountsService.findAll();
   }
 
+  // @Get(':id')
+  // async findById(@Param() params): Promise<Account> {
+  //   console.log(params.id);
+  //   return await this.accountsService.findOne(params.id);
+  // };
+
+  @UseGuards(LocalStrategy)
+  @Get('')
+  async login(@Request() req): Promise<any> {
+    return await this.accountsService.login(req.query.email, req.query.password);
+  }
+
+  @UseGuards(JwtStrategy)
   @Get(':id')
-  async findById(@Param() params): Promise<Account> {
-    console.log(params.id);
-    return await this.accountsService.findOne(params.id);
+  async findById(@Request() req): Promise<ResponseDto> {
+    return await this.accountsService.getAccountById(req.params.id, req.user.id);
   };
 
   @Post()
