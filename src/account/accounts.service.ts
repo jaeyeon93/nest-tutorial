@@ -23,11 +23,13 @@ export class AccountsService {
     return await this.accountsRepository.findOne(id);
   }
 
-  async updateAccount(id: string, email: string, password: string): Promise<Account> {
-    const before: Account = await this.findOne(id);
+  async updateAccount(email: string, password: string): Promise<Account> {
+    const before: Account = await this.findByEmail(email);
     const temp: AccountDto = before.of().update(email, password);
-    await this.accountsRepository.update(id, temp.of());
-    return await this.findOne(id);
+    await this.accountsRepository.update(temp.getId(), temp.of());
+    console.log(`temp.of() ${JSON.stringify(temp.of())}`);
+    console.log(`temp.id : ${temp.getId()}`)
+    return await this.findByEmail(email);
   }
 
   async remove(id: string): Promise<void> {

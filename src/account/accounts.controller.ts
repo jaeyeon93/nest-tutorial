@@ -40,7 +40,7 @@ export class AccountsController {
   @Put(':id')
   async updateById(@Param() params, @Body() data): Promise<Account> {
     console.log(typeof data);
-    const updatedAccount: Account = await this.accountsService.updateAccount(params.id, data.email, data.password);
+    const updatedAccount: Account = await this.accountsService.updateAccount(data.email, data.password);
     return updatedAccount;
   }
 

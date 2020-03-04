@@ -11,20 +11,9 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async createToken() {
-    const account: JwtPayload = {email: 'jwt-email', password: 'jwt-password'};
-    const accessToken = this.jwtService.sign(account);
-    return {
-      expiresIn: 3600,
-      accessToken,
-    }
-  }
-
+  // 실제 전달한 비밀번호와 DB에 있는 account에 있는 비밀번호를 서로 검증.
   async validateAccount(payload: JwtPayload): Promise<any> {
-    console.log(`auth에서 validate account호출`);
-    console.log(`auth에서 payload ${JSON.stringify(payload)}`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
-    console.log(`account ${account}`);
     if (account && account.getPassword() == payload.password) {
       const {getPassword, ...result} = account;
       return result;
@@ -32,6 +21,7 @@ export class AuthService {
     return null;
   }
 
+  // 이전에 검증들이 끝나면 email로 사용자를 구별하고 access_token을 발급. jwtService.sign이 사용자인증을 의미. 여기서 토큰생성한다.
   async login(email: string, password: string) {
     console.log(`auth에서 login호출`);
     const payload = {email, password}
@@ -42,4 +32,12 @@ export class AuthService {
     }
   }
 
+  async createToken() {
+    const account: JwtPayload = {email: 'jwt-email', password: 'jwt-password'};
+    const accessToken = this.jwtService.sign(account);
+    return {
+      expiresIn: 3600,
+      accessToken,
+    }
+  }
 }

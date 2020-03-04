@@ -31,7 +31,7 @@ export class Account {
    }
 
     getId(): string {
-      return this.userId;
+      return this.id;
     }
 
     getEmail(): string {
