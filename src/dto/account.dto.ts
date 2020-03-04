@@ -6,8 +6,7 @@ export class AccountDto {
   private password: string;
   private accessToken: string;
 
-  constructor(userId: string, email: string, password: string) {
-    this.id = userId;
+  constructor(email: string, password: string) {
     this.email = email;
     this.password = password;
   }
@@ -44,6 +43,6 @@ export class AccountDto {
   }
 
   of(): Account {
-    return new Account(this.getId(), this.getEmail(), this.getPassword())
+    return new Account(this.getEmail(), this.getPassword())
   }
 }

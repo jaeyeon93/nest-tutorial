@@ -40,9 +40,8 @@ export class AccountsController {
 
   @Post()
   @UsePipes(new ValidationPipe({transform: true}))
-  async createAccount(@Body() accountDto: AccountDto) {
-    const result: Account = await this.accountsService.createAccount(accountDto);
-    return JSON.stringify(result);
+  async createAccount(@Body() accountDto: AccountDto): Promise<ResponseDto> {
+    return await this.accountsService.createAccount(accountDto);
   }
 
   @UseGuards(JwtAuthGuard)

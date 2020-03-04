@@ -13,9 +13,10 @@ export class AccountsService {
   private readonly accountsRepository: AccountsRepository
   ) {};
 
-  async createAccount(accountDto: AccountDto): Promise<Account> {
+  async createAccount(accountDto: AccountDto): Promise<ResponseDto> {
     const account: Account = accountDto.of();
-    return await this.accountsRepository.save(account);
+    account.setAccessToken(await this.authService.makeAccessToken(account));
+    return new ResponseDto(await this.accountsRepository.save(account));
   }
 
   async findAll(): Promise<Account[]> {
