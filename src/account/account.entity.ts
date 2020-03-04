@@ -3,11 +3,8 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 
 @Entity()
 export class Account {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-   @Column({length: 40, unique: true})
-   private readonly userId: string;
+   @PrimaryGeneratedColumn("uuid")
+   id: string;
 
    @Column({length: 40, unique: true})
    private readonly email: string;
@@ -16,7 +13,7 @@ export class Account {
    private readonly password: string;
 
    @Column({nullable: true})
-   private readonly accessToken: string;
+   private accessToken: string;
 
    @CreateDateColumn()
    private created_at: string;
@@ -24,8 +21,7 @@ export class Account {
    @UpdateDateColumn()
    private updated_at: string;
 
-   constructor(userId: string, email: string, password: string) {
-     this.userId = userId;
+   constructor(email: string, password: string) {
      this.email = email;
      this.password = password;
    }
@@ -50,7 +46,15 @@ export class Account {
      return this.updated_at;
     }
 
+    getAccessToken(): string {
+     return this.accessToken;
+    }
+
+    setAccessToken(value: string) {
+      this.accessToken = value;
+    }
+
     of(): AccountDto {
-     return new AccountDto(this.getId(), this.getEmail(), this.getPassword());
+     return new AccountDto(this.getEmail(), this.getPassword());
     }
 }

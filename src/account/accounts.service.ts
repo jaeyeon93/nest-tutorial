@@ -1,16 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AccountDto } from '../dto/account.dto';
 import { Account } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
+import { ResponseDto } from '../dto/responseDto';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class AccountsService {
-  constructor(private readonly accountsRepository: AccountsRepository) {};
+  constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  private readonly accountsRepository: AccountsRepository
+  ) {};
 
-  async createAccount(accountDto: AccountDto): Promise<Account> {
+  async createAccount(accountDto: AccountDto): Promise<ResponseDto> {
     const account: Account = accountDto.of();
-    console.log(`생성된 account : ${JSON.stringify(account)}`);
-    return await this.accountsRepository.save(account);
+    account.setAccessToken(await this.authService.makeAccessToken(account));
+    return new ResponseDto(await this.accountsRepository.save(account));
   }
 
   async findAll(): Promise<Account[]> {
@@ -23,21 +29,40 @@ export class AccountsService {
     return await this.accountsRepository.findOne(id);
   }
 
-  async updateAccount(email: string, password: string): Promise<Account> {
+  async updateAccount(email: string, password: string): Promise<ResponseDto> {
     const before: Account = await this.findByEmail(email);
     const temp: AccountDto = before.of().update(email, password);
-    await this.accountsRepository.update(temp.getId(), temp.of());
-    console.log(`temp.of() ${JSON.stringify(temp.of())}`);
-    console.log(`temp.id : ${temp.getId()}`)
-    return await this.findByEmail(email);
+    await this.accountsRepository.update(before.getId(), temp.of());
+    return new ResponseDto(await this.findByEmail(email));
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<any> {
     console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
+    return {"message":"deleted"};
   }
 
   async findByEmail(email: string): Promise<Account> {
     return await this.accountsRepository.findOne({where: {email}});
+  }
+
+  // GET /accounts/:id를 하게되면 Token안에 있는 uuid와 parameter로 전달되는 id를 비교 검증해줘야한다.
+  async getAccountById(inputId: string, originId: string) {
+    if (!this.compareUserId(inputId, originId))
+      throw new UnauthorizedException('유저가 다릅니다.');
+    const account: Account = await this.accountsRepository.findOne(inputId);
+    account.setAccessToken(this.authService.makeAccessToken(account));
+    await this.accountsRepository.update(account.getId(), account);
+    return new ResponseDto(account);
+  }
+
+  compareUserId(inputId: string, orginId: string): boolean {
+    if (inputId != orginId)
+      return false;
+    return true;
+  }
+
+  async login(email: string, password: string) {
+    return await this.authService.login(email, password);
   }
 }

@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [ConfigModule.forRoot({isGlobal: true}), AccountsModule,
+  imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, AccountsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -21,8 +21,7 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-    }),
-    AuthModule
+    })
   ],
 })
 export class AppModule implements NestModule {
