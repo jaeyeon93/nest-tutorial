@@ -35,9 +35,10 @@ export class AccountsService {
     return new ResponseDto(await this.findByEmail(email));
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<any> {
     console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
+    return {"message":"deleted"};
   }
 
   async findByEmail(email: string): Promise<Account> {
