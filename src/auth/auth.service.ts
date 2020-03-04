@@ -12,7 +12,7 @@ export class AuthService {
   ) {}
 
   async createToken() {
-    const account: JwtPayload = {id: 'jwt-id', email: 'jwt-email', password: 'jwt-password'};
+    const account: JwtPayload = {email: 'jwt-email', password: 'jwt-password'};
     const accessToken = this.jwtService.sign(account);
     return {
       expiresIn: 3600,
@@ -21,18 +21,20 @@ export class AuthService {
   }
 
   async validateAccount(payload: JwtPayload): Promise<any> {
-    const account: Account = await this.accountsService.findOne(payload.id);
+    const account: Account = await this.accountsService.findByEmail(payload.email);
     console.log(`validateAccount에서 account ${JSON.stringify(account)}`);
     if (account && account.getPassword() == payload.password) {
       const {getPassword, ...result} = account;
+      console.log(`auth service에서 result ${JSON.stringify(result)}`);
       return result;
     }
     return null;
   }
 
-  async login(account: any) {
-    const payload = {id: account.getId(), email: account.getEmail(), password: account.getPassword()}
+  async login(email: string, password: string) {
+    const payload = {email, password}
     return {
+      email,
       // eslint-disable-next-line @typescript-eslint/camelcase
       access_token: this.jwtService.sign(payload),
     }
