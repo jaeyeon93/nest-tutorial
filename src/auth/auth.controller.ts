@@ -17,9 +17,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getAccount(@Param() params) {
-    const account = await this.accountsService.findOne(params.id);
-    return account;
+  async getAccount(@Request() req) {
+    return await this.authService.match(req.params.id, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
