@@ -32,7 +32,7 @@ export class AccountsService {
   async updateAccount(email: string, password: string): Promise<ResponseDto> {
     const before: Account = await this.findByEmail(email);
     const temp: AccountDto = before.of().update(email, password);
-    await this.accountsRepository.update(temp.getId(), temp.of());
+    await this.accountsRepository.update(before.getId(), temp.of());
     return new ResponseDto(await this.findByEmail(email));
   }
 
