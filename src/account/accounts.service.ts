@@ -66,6 +66,7 @@ export class AccountsService {
   }
 
   async login(email: string, password: string) {
+    console.log(`accountService loginCalled ${email}, ${password}`);
     return await this.authService.login(email, password);
   }
 
@@ -80,6 +81,7 @@ export class AccountsService {
     return await bcrypt.hash(password, 10);
   }
 
+  // input으로 들어온 attemp password와 기존 Account가 가지고있는 password를 서로 비교.
   async comparePassword(attempt: string, account: Account): Promise<boolean> {
     return await bcrypt.compare(attempt, account.getPassword());
   }
