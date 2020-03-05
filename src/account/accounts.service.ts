@@ -4,17 +4,19 @@ import { Account } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
 import { ResponseDto } from '../dto/responseDto';
 import { AuthService } from '../auth/auth.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AccountsService {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-  private readonly accountsRepository: AccountsRepository
+    private readonly accountsRepository: AccountsRepository
   ) {};
 
   async createAccount(accountDto: AccountDto): Promise<ResponseDto> {
-    const account: Account = accountDto.of();
+    const hashingDto = await this.applyDtoHashing(accountDto);
+    const account: Account = hashingDto.of();
     account.setAccessToken(await this.authService.makeAccessToken(account));
     return new ResponseDto(await this.accountsRepository.save(account));
   }
@@ -56,13 +58,31 @@ export class AccountsService {
     return new ResponseDto(account);
   }
 
-  compareUserId(inputId: string, orginId: string): boolean {
-    if (inputId != orginId)
+  // GET, DELETE, PUT을 할때 입력으로 들어온 UUID와 실제 JWT에 있는 UUID가 같은비 비교.
+  compareUserId(inputId: string, originId: string): boolean {
+    if (inputId != originId)
       return false;
     return true;
   }
 
   async login(email: string, password: string) {
+    console.log(`accountService loginCalled ${email}, ${password}`);
     return await this.authService.login(email, password);
+  }
+
+  // input으로 들어온 DTO를 password hashing을 통해 다시 객체화
+  async applyDtoHashing(accountDto: AccountDto): Promise<AccountDto> {
+    const beforePassword: string = accountDto.getPassword();
+    return new AccountDto(accountDto.getEmail(), await this.hashPassword(beforePassword))
+  }
+
+  // Database에 삽입하기전 password 암호화
+  async hashPassword(password: string) {
+    return await bcrypt.hash(password, process.env.salt);
+  }
+
+  // input으로 들어온 attemp password와 기존 Account가 가지고있는 password를 서로 비교.
+  async comparePassword(attempt: string, account: Account): Promise<boolean> {
+    return await bcrypt.compare(attempt, account.getPassword());
   }
 }

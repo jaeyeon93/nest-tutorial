@@ -1,5 +1,6 @@
 import { AccountDto } from '../dto/account.dto';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { IsDate, IsHash, IsString } from 'class-validator';
 
 @Entity()
 export class Account {
@@ -13,13 +14,16 @@ export class Account {
    private readonly password: string;
 
    @Column({nullable: true})
+   @IsString()
    private accessToken: string;
 
    @CreateDateColumn()
-   private created_at: string;
+   @IsDate()
+   private created_at: Date;
 
    @UpdateDateColumn()
-   private updated_at: string;
+   @IsDate()
+   private updated_at: Date;
 
    constructor(email: string, password: string) {
      this.email = email;
@@ -38,11 +42,11 @@ export class Account {
       return this.password;
     }
 
-    getCreatedDate(): string {
+    getCreatedDate(): Date {
      return this.created_at;
     }
 
-    getUpdateDate(): string {
+    getUpdateDate(): Date {
      return this.updated_at;
     }
 
