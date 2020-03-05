@@ -4,6 +4,7 @@ import { Account } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
 import { ResponseDto } from '../dto/responseDto';
 import { AuthService } from '../auth/auth.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AccountsService {
@@ -14,7 +15,8 @@ export class AccountsService {
   ) {};
 
   async createAccount(accountDto: AccountDto): Promise<ResponseDto> {
-    const account: Account = accountDto.of();
+    const hashingDto = await this.applyDtoHashing(accountDto);
+    const account: Account = hashingDto.of();
     account.setAccessToken(await this.authService.makeAccessToken(account));
     return new ResponseDto(await this.accountsRepository.save(account));
   }
@@ -65,5 +67,20 @@ export class AccountsService {
 
   async login(email: string, password: string) {
     return await this.authService.login(email, password);
+  }
+
+  // input으로 들어온 DTO를 password hashing을 통해 다시 객체화
+  async applyDtoHashing(accountDto: AccountDto): Promise<AccountDto> {
+    const beforePassword: string = accountDto.getPassword();
+    return new AccountDto(accountDto.getEmail(), await this.hashPassword(beforePassword))
+  }
+
+  // Database에 삽입하기전 password 암호화
+  async hashPassword(password: string) {
+    return await bcrypt.hash(password, 10);
+  }
+
+  async comparePassword(attempt: string, account: Account): Promise<boolean> {
+    return await bcrypt.compare(attempt, account.getPassword());
   }
 }
