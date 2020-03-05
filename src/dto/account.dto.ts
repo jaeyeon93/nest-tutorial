@@ -1,8 +1,15 @@
 import { Account } from '../account/account.entity';
+import { BeforeInsert } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { IsString } from 'class-validator';
 
 export class AccountDto {
   private id: string;
+
+  @IsString()
   private email: string;
+
+  @IsString()
   private password: string;
 
   constructor(email: string, password: string) {

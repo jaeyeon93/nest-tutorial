@@ -10,7 +10,7 @@ export class AccountsService {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-  private readonly accountsRepository: AccountsRepository
+    private readonly accountsRepository: AccountsRepository
   ) {};
 
   async createAccount(accountDto: AccountDto): Promise<ResponseDto> {
@@ -56,8 +56,9 @@ export class AccountsService {
     return new ResponseDto(account);
   }
 
-  compareUserId(inputId: string, orginId: string): boolean {
-    if (inputId != orginId)
+  // GET, DELETE, PUT을 할때 입력으로 들어온 UUID와 실제 JWT에 있는 UUID가 같은비 비교.
+  compareUserId(inputId: string, originId: string): boolean {
+    if (inputId != originId)
       return false;
     return true;
   }

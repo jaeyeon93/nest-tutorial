@@ -3,9 +3,6 @@ import { AccountsService } from '../account/accounts.service';
 import {Account} from '../account/account.entity';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
-import { JwtStrategy } from './strategy/jwt.strategy';
-import { ResponseDto } from '../dto/responseDto';
-import { AccountsRepository } from '../account/accounts.repository';
 
 @Injectable()
 export class AuthService {
@@ -18,13 +15,14 @@ export class AuthService {
   // 실제 전달한 비밀번호와 DB에 있는 account에 있는 비밀번호를 서로 검증.
   async validateAccount(payload: JwtPayload): Promise<any> {
     const account: Account = await this.accountsService.findByEmail(payload.email);
-    if (account && account.getPassword() == payload.password) {
+    if (account && account.comparePassword(payload.password)) {
       const {getPassword, ...result} = account;
       return result;
     }
     return null;
   }
 
+  // Account를 받으면 JWT토큰을 새로 발급한다.
   makeAccessToken(account: Account) {
     return this.jwtService.sign({'email': account.getEmail(), 'password': account.getPassword()});
   };
@@ -34,7 +32,6 @@ export class AuthService {
     const payload = {email, password}
     return {
       email,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       accessToken: this.jwtService.sign(payload),
     }
   }

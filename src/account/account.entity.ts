@@ -1,5 +1,6 @@
 import { AccountDto } from '../dto/account.dto';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class Account {
@@ -10,7 +11,7 @@ export class Account {
    private readonly email: string;
 
    @Column({length: 256, nullable: false})
-   private readonly password: string;
+   private password: string;
 
    @Column({nullable: true})
    private accessToken: string;
@@ -21,9 +22,20 @@ export class Account {
    @UpdateDateColumn()
    private updated_at: string;
 
+   // Database에 삽입하기전 password 암호화
+   @BeforeInsert()
+   async hashPassword() {
+     this.password = await bcrypt.hash(this.password, 10);
+   }
+
    constructor(email: string, password: string) {
      this.email = email;
      this.password = password;
+   }
+
+
+   async comparePassword(attempt: string): Promise<boolean> {
+     return await bcrypt.compare(attempt, this.password);
    }
 
     getId(): string {
