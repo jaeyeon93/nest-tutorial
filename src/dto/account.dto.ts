@@ -1,12 +1,11 @@
 import { Account } from '../account/account.entity';
-import { BeforeInsert } from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import { IsString } from 'class-validator';
+import { IsEmail, IsString, Matches } from 'class-validator';
 
 export class AccountDto {
   private id: string;
 
   @IsString()
+  @IsEmail()
   private email: string;
 
   @IsString()

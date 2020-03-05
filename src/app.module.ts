@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {AccountsModule} from './account/accounts.module';
@@ -7,10 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import {ConfigModule} from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { APP_PIPE } from '@nestjs/core';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {provide: APP_PIPE, useClass: ValidationPipe}],
   imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, AccountsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
