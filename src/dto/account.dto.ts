@@ -4,7 +4,6 @@ export class AccountDto {
   private id: string;
   private email: string;
   private password: string;
-  private accessToken: string;
 
   constructor(email: string, password: string) {
     this.email = email;
