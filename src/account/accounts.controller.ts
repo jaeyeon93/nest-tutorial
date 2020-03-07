@@ -52,7 +52,7 @@ export class AccountsController {
   async update(@Request() req): Promise<ResponseDto> {
     if (!this.accountsService.compareUserId(req.params.id, req.user.id))
       throw new UnauthorizedException("수정권한이 없습니다.");
-    return await this.accountsService.updateAccount(req.body.email, req.body.password);
+    return await this.accountsService.updateAccount(req.params.id, req.body.email, req.body.password);
   }
 
   @UseGuards(JwtAuthGuard)

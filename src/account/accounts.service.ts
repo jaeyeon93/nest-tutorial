@@ -31,9 +31,12 @@ export class AccountsService {
     return await this.accountsRepository.findOne(id);
   }
 
-  async updateAccount(email: string, password: string): Promise<ResponseDto> {
-    const before: Account = await this.findByEmail(email);
+  async updateAccount(id: string, email: string, password: string): Promise<ResponseDto> {
+    console.log(`updateAccount에서 email : ${email} ${password}`);
+    const before: Account = await this.findOne(id);
+    console.log(`before ${before.getEmail()} ${before.getId()}`)
     const temp: AccountDto = before.of().update(email, password);
+    console.log(`temp ${temp.getEmail()} ${temp.getId()}`)
     await this.accountsRepository.update(before.getId(), temp.of());
     return new ResponseDto(await this.findByEmail(email));
   }

@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
 import * as request from 'supertest';
+import exp = require('constants');
 
 describe('account controller e2e test', () => {
   let app: INestApplication;
@@ -51,10 +52,22 @@ describe('account controller e2e test', () => {
         expect(res.body.email).toBe('test@email.com');
         done();
       })
-  }, 10000)
+  }, 10000);
+
+  test('GET /accounts/:id', async (done) => {
+    request(app.getHttpServer())
+      .get(`/accounts/${id}`)
+      .set('Authorization', 'Bearer ' + accessToken)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.email).toBe('test@email.com')
+        expect(res.body.accessToken).toBeDefined();
+        expect(res.body.id).toBeDefined();
+        done();
+      });
+  });
 
   afterEach(async (done) => {
-    console.log(`afterEach called`);
     request(app.getHttpServer())
       .delete(`/accounts/${id}`)
       .set('Authorization', 'Bearer ' + accessToken)
