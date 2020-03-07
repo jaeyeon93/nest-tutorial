@@ -17,9 +17,4 @@ describe('Accounts Controller', () => {
   it('should be defined', () => {
     expect(accountsController).toBeDefined();
   });
-
-  // it('findAll', () => {
-  //   const result = ['test'];
-  //   jest.spyOn(accountsService, 'findAll').mockImplementation((temp) => temp);
-  // });
 });

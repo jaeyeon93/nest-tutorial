@@ -39,8 +39,8 @@ export class AccountsService {
   }
 
   async remove(id: string): Promise<any> {
-    console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
+    console.log(`삭제됨`);
     return {"message":"deleted"};
   }
 
@@ -65,9 +65,15 @@ export class AccountsService {
     return true;
   }
 
+  // authService.login에 있는 메서드호출. Controller에서 AuthService를 주입안하기 위해 동일한 이름으로 메서드 호출.
   async login(email: string, password: string) {
-    console.log(`accountService loginCalled ${email}, ${password}`);
-    return await this.authService.login(email, password);
+    const account: Account = await this.findByEmail(email);
+    if (!await this.comparePassword(password, account))
+      throw new UnauthorizedException('Password is wrong');
+    return {
+      email,
+      accessToken: await this.authService.makeAccessToken(account)
+    };
   }
 
   // input으로 들어온 DTO를 password hashing을 통해 다시 객체화

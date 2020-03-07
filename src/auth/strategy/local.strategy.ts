@@ -17,7 +17,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   // 처음 request가 들어가면 request에 대한 검증을 한다.
   async validate(email: string, password: string): Promise<any> {
     console.log(`local strategy validate`);
-    const payload: JwtPayload = {email, password};
+    const payload: JwtPayload = {email};
     const account = await this.authService.validateAccount(payload);
     if (!account)
       throw new UnauthorizedException('Fail to login try again');

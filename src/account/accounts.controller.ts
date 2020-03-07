@@ -28,7 +28,9 @@ export class AccountsController {
   @UseGuards(LocalAuthGuard)
   @Get()
   async login(@Request() req): Promise<any> {
-    return await this.accountsService.login(req.query.email, req.query.password);
+    const result = await this.accountsService.login(req.query.email, req.query.password);
+    console.log(`Login result : ${JSON.stringify(result)}`);
+    return result;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,6 +58,7 @@ export class AccountsController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteById(@Request() req): Promise<any> {
+    console.log(`delete method called ${req.params.id} // userid : ${req.user.id}`);
     if (!this.accountsService.compareUserId(req.params.id, req.user.id))
       throw new UnauthorizedException("삭제할 권한 없습니다.");
     return await this.accountsService.remove(req.params.id);

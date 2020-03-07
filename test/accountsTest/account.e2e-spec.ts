@@ -28,7 +28,6 @@ describe('account controller e2e test', () => {
       .expect(201)
       .end((err, res) => {
         if (err) throw err;
-        console.log(res.body);
         id = res.body.id;
         accessToken = res.body.accessToken;
         expect(accessToken).toBeDefined();
@@ -54,12 +53,22 @@ describe('account controller e2e test', () => {
       })
   }, 10000)
 
-  afterEach(async () => {
+  afterEach(async (done) => {
+    console.log(`afterEach called`);
     request(app.getHttpServer())
-      .delete('/accounts')
-  })
+      .delete(`/accounts/${id}`)
+      .set('Authorization', 'Bearer ' + accessToken)
+      .expect(200)
+      .end((err, res) => {
+        console.log(`${id}가 삭제되었습니다.`);
+        expect(res.body.message).toBe('deleted');
+        done();
+      });
+  });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    console.log(`app closed`);
+    done();
   });
 });
