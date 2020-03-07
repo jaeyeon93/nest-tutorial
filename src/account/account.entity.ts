@@ -10,7 +10,7 @@ export class Account {
    @Column({length: 40, unique: true})
    private readonly email: string;
 
-   @Column({length: 256, nullable: false})
+   @Column({length: 512, nullable: false})
    private readonly password: string;
 
    @Column({nullable: true})

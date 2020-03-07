@@ -28,20 +28,21 @@ export class AccountsController {
   @UseGuards(LocalAuthGuard)
   @Get()
   async login(@Request() req): Promise<any> {
-    return await this.accountsService.login(req.query.email, req.query.password);
+    const result = await this.accountsService.login(req.query.email, req.query.password);
+    return result;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Request() req): Promise<ResponseDto> {
-    console.log(`id ${req.params.id}`);
     return await this.accountsService.getAccountById(req.params.id, req.user.id);
   };
 
   @Post()
   @UsePipes(new ValidationPipe({transform: true}))
   async createAccount(@Body() accountDto: AccountDto): Promise<ResponseDto> {
-    return await this.accountsService.createAccount(accountDto);
+    const response: ResponseDto = await this.accountsService.createAccount(accountDto);
+    return response;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,7 +50,7 @@ export class AccountsController {
   async update(@Request() req): Promise<ResponseDto> {
     if (!this.accountsService.compareUserId(req.params.id, req.user.id))
       throw new UnauthorizedException("수정권한이 없습니다.");
-    return await this.accountsService.updateAccount(req.body.email, req.body.password);
+    return await this.accountsService.updateAccount(req.params.id, req.body.email, req.body.password);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -12,11 +12,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // 실제 전달한 비밀번호와 DB에 있는 account에 있는 비밀번호를 서로 검증.
+  // Token에 있는 email과 실제 email을 비교.
   async validateAccount(payload: JwtPayload): Promise<any> {
+    console.log(`validate account ${payload}`);
+    console.log(`payload email : ${payload.email}`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
-    if (account && this.accountsService.comparePassword(payload.password, account)) {
-      const {getPassword, ...result} = account;
+    if (account.getEmail() == payload.email) {
+      console.log(`validateAccount Success`);
+      const {...result} = account;
       return result;
     }
     return null;
@@ -26,13 +29,4 @@ export class AuthService {
   makeAccessToken(account: Account) {
     return this.jwtService.sign({'email': account.getEmail()});
   };
-
-  // 이전에 검증들이 끝나면 email로 사용자를 구별하고 access_token을 발급. jwtService.sign이 사용자인증을 의미. 여기서 토큰생성한다.
-  async login(email: string, password: string) {
-    const payload = {email, password}
-    return {
-      email,
-      accessToken: this.jwtService.sign(payload),
-    }
-  }
 }

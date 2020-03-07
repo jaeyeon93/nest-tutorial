@@ -31,16 +31,18 @@ export class AccountsService {
     return await this.accountsRepository.findOne(id);
   }
 
-  async updateAccount(email: string, password: string): Promise<ResponseDto> {
-    const before: Account = await this.findByEmail(email);
+  async updateAccount(id: string, email: string, password: string): Promise<ResponseDto> {
+    const before: Account = await this.findOne(id);
     const temp: AccountDto = before.of().update(email, password);
-    await this.accountsRepository.update(before.getId(), temp.of());
-    return new ResponseDto(await this.findByEmail(email));
+    const afterAccount: Account = temp.of();
+    afterAccount.setAccessToken(await this.authService.makeAccessToken(afterAccount));
+    await this.accountsRepository.update(id, afterAccount);
+    return new ResponseDto(await this.findOne(id));
   }
 
   async remove(id: string): Promise<any> {
-    console.log(`id : ${id} typeof id ${typeof id}`);
     await this.accountsRepository.delete(id);
+    console.log(`삭제됨`);
     return {"message":"deleted"};
   }
 
@@ -65,9 +67,15 @@ export class AccountsService {
     return true;
   }
 
+  // authService.login에 있는 메서드호출. Controller에서 AuthService를 주입안하기 위해 동일한 이름으로 메서드 호출.
   async login(email: string, password: string) {
-    console.log(`accountService loginCalled ${email}, ${password}`);
-    return await this.authService.login(email, password);
+    const account: Account = await this.findByEmail(email);
+    if (!await this.comparePassword(password, account))
+      throw new UnauthorizedException('Password is wrong');
+    return {
+      email,
+      accessToken: await this.authService.makeAccessToken(account)
+    };
   }
 
   // input으로 들어온 DTO를 password hashing을 통해 다시 객체화
@@ -78,7 +86,8 @@ export class AccountsService {
 
   // Database에 삽입하기전 password 암호화
   async hashPassword(password: string) {
-    return await bcrypt.hash(password, process.env.salt);
+    return await bcrypt.hash(password, 10);
+    // return await bcrypt.hash(password, process.env.salt);
   }
 
   // input으로 들어온 attemp password와 기존 Account가 가지고있는 password를 서로 비교.
