@@ -5,8 +5,10 @@ import * as request from 'supertest';
 
 describe('account controller e2e test', () => {
   let app: INestApplication;
+  let id: string;
+  let accessToken: string;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -14,17 +16,7 @@ describe('account controller e2e test', () => {
     await app.init().then(() => console.log(`app이 정상적으로 생성되었습니다.`));
   });
 
-  it('GET /', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .end((err, res) => {
-        if (err) throw err;
-        console.log(res.body);
-      })
-  });
-
-  test('POST /accounts', async (done) => {
+  beforeEach(async (done) => {
     request(app.getHttpServer())
       .post('/accounts')
       .send({
@@ -36,12 +28,16 @@ describe('account controller e2e test', () => {
       .expect(201)
       .end((err, res) => {
         if (err) throw err;
-        const data = res.text;
-        console.log(typeof data);
-        console.log(data);
+        console.log(res.body);
+        id = res.body.id;
+        accessToken = res.body.accessToken;
+        expect(accessToken).toBeDefined();
+        expect(id).toBeDefined();
+        expect(res.body.email).toBe('test@email.com');
+        console.log(`BeforeEach로 미리 데이터 넣어두기`);
         done();
       });
-  }, 10000);
+  }, 10000)
 
   test('GET /login', async (done) => {
     request(app.getHttpServer())
@@ -52,10 +48,16 @@ describe('account controller e2e test', () => {
       .expect(200)
       .end((err, res) => {
         if (err) throw err;
-        console.log(res.text);
+        console.log(res.body);
+        expect(res.body.email).toBe('test@email.com');
         done();
       })
   }, 10000)
+
+  afterEach(async () => {
+    request(app.getHttpServer())
+      .delete('/accounts')
+  })
 
   afterAll(async () => {
     await app.close();
