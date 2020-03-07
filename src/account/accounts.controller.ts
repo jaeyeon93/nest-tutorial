@@ -29,14 +29,12 @@ export class AccountsController {
   @Get()
   async login(@Request() req): Promise<any> {
     const result = await this.accountsService.login(req.query.email, req.query.password);
-    console.log(`Login result : ${JSON.stringify(result)}`);
     return result;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Request() req): Promise<ResponseDto> {
-    console.log(`id ${req.params.id}`);
     return await this.accountsService.getAccountById(req.params.id, req.user.id);
   };
 
@@ -58,7 +56,6 @@ export class AccountsController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteById(@Request() req): Promise<any> {
-    console.log(`delete method called ${req.params.id} // userid : ${req.user.id}`);
     if (!this.accountsService.compareUserId(req.params.id, req.user.id))
       throw new UnauthorizedException("삭제할 권한 없습니다.");
     return await this.accountsService.remove(req.params.id);
