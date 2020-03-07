@@ -13,10 +13,4 @@ describe('Account Test', () => {
       const dto: AccountDto = account.of();
       expect(dto.getEmail()).toBe('email');
   });
-
-  test('Password hasing', () => {
-    const accountDto: AccountDto = new AccountDto('jaeyeon93@naver.com', '11111');
-    const account: Account = accountDto.of();
-    console.log(account.getPassword());
-  });
 });

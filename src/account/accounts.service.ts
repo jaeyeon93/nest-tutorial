@@ -78,7 +78,8 @@ export class AccountsService {
 
   // Database에 삽입하기전 password 암호화
   async hashPassword(password: string) {
-    return await bcrypt.hash(password, process.env.salt);
+    return await bcrypt.hash(password, 10);
+    // return await bcrypt.hash(password, process.env.salt);
   }
 
   // input으로 들어온 attemp password와 기존 Account가 가지고있는 password를 서로 비교.
