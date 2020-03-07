@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConstants } from '../constants';
 import { JwtPayload } from '../jwt-payload.interface';
 import { AuthService } from '../auth.service';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // controller에 @UseGuards(JwtAuthGuard) 붙은 메서드들은 여기를 사전에 거쳐서 검증을 한다.
   async validate(payload: JwtPayload) {
-    console.log(`jwt.strategy에서 전달받은 payload ${JSON.stringify(payload)}`);
     const account = await this.authService.validateAccount(payload);
     if (!account)
       throw new UnauthorizedException();
