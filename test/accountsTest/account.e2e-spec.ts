@@ -24,11 +24,11 @@ describe('account controller e2e test', () => {
       })
   });
 
-  it('POST /accounts', async (done) => {
+  test('POST /accounts', async (done) => {
     request(app.getHttpServer())
       .post('/accounts')
       .send({
-        'email': 'te@email.com',
+        'email': 'test@email.com',
         'password': 'S12345678'
       })
       .set('Content-Type', 'application/json')
@@ -38,10 +38,24 @@ describe('account controller e2e test', () => {
         if (err) throw err;
         const data = res.text;
         console.log(typeof data);
-        console.log(JSON.stringify(data));
+        console.log(data);
         done();
       });
   }, 10000);
+
+  test('GET /login', async (done) => {
+    request(app.getHttpServer())
+      .get('/accounts')
+      .query({'email': 'test@email.com', 'password':'S12345678'})
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        console.log(res.text);
+        done();
+      })
+  }, 10000)
 
   afterAll(async () => {
     await app.close();
