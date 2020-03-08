@@ -13,11 +13,11 @@ COPY package*.json ./
 COPY .env ./
 RUN ls /app
 # npm module install
-RUN npm install
+RUN npm install --no-optional
 RUN npm rebuild bcrypt --build-from-source
 COPY . .
 RUN npm run build
 RUN ls
-
+RUN echo "success to build"
 # run command npm start
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
