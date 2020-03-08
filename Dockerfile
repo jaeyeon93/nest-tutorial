@@ -12,10 +12,12 @@ WORKDIR /app
 COPY package*.json ./
 COPY .env ./
 RUN ls /app
+# install node-pre-gyp
+RUN npm i -g node-pre-gyp
 # npm module install
-RUN npm install --no-optional
-RUN npm rebuild bcrypt --build-from-source
+RUN npm install -f --no-optional
 COPY . .
+RUN npm rebuild bcrypt --build-from-source
 RUN npm run build
 RUN ls
 RUN echo "success to build"

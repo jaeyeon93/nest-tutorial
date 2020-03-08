@@ -28,10 +28,11 @@
     "@nestjs/platform-express": "^6.10.14",
     "@nestjs/typeorm": "^6.3.3",
     "@types/passport-jwt": "^3.0.3",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.8",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
+    "install": "^0.13.0",
     "joi": "^14.3.1",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
@@ -89,5 +90,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jaeyeon93/nest-tutorial"
-  }
+  },
+  "private": true
 }
