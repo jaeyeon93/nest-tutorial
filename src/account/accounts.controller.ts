@@ -39,7 +39,7 @@ export class AccountsController {
 
   @ApiQuery({name: 'email', description: 'need to email'})
   @ApiQuery({name: 'password', description: 'need to password'})
-  @ApiResponse({status: 201, description: 'Success to login', type: ResponseDto})
+  @ApiResponse({status: 200, description: 'Success to login', type: ResponseDto})
   @UseGuards(LocalAuthGuard)
   @Get()
   async login(@Request() req): Promise<any> {
@@ -49,6 +49,7 @@ export class AccountsController {
   }
 
   @ApiHeader({ name: 'Authorization', description: 'accessToken'})
+  @ApiOkResponse({type: ResponseDto})
   @ApiParam({name: 'uuid', description: 'need to uuid'})
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
