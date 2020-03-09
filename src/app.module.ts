@@ -17,8 +17,7 @@ import { APP_PIPE } from '@nestjs/core';
   imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, AccountsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST || '127.0.0.1',
-      port: 33060,
+      host: process.env.DB_HOST,
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,

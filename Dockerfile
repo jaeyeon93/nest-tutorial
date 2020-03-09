@@ -1,4 +1,4 @@
-FROM node:10.19-alpine
+FROM node:10-alpine
 
 MAINTAINER Jimmy KIM <jimmyjaeyeon@gmail.com>
 
@@ -22,4 +22,5 @@ RUN npm run build
 RUN ls
 RUN echo "success to build"
 # run command npm start
-CMD ["node", "dist/main.js"]
+EXPOSE 3000
+CMD ["npm", "run", "start:prod"]
