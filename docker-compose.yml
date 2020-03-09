@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    restart: always
+    ports:
+      - "33060:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+    networks:
+      - backend
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+  nest:
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mysql
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - mysql
+    networks:
+      - backend
+networks:
+  backend:
+    driver: "bridge"
