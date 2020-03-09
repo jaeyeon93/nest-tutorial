@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Post,
-  Put, Request, UnauthorizedException,
+  Put, Request, Res, UnauthorizedException,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -15,7 +15,18 @@ import { Account } from './account.entity';
 import { ResponseDto } from '../dto/responseDto';
 import { LocalAuthGuard } from '../auth/strategy/local-auth.guard';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth.guard';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('accounts')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {};
@@ -26,6 +37,9 @@ export class AccountsController {
     return await this.accountsService.findAll();
   }
 
+  @ApiQuery({name: 'email', description: 'need to email'})
+  @ApiQuery({name: 'password', description: 'need to password'})
+  @ApiResponse({status: 201, description: 'Success to login', type: ResponseDto})
   @UseGuards(LocalAuthGuard)
   @Get()
   async login(@Request() req): Promise<any> {
@@ -34,6 +48,9 @@ export class AccountsController {
     return result;
   }
 
+  @ApiHeader({ name: 'Authorization', description: 'accessToken'})
+  @ApiParam({name: 'uuid', description: 'need to uuid'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Request() req): Promise<ResponseDto> {
@@ -41,6 +58,8 @@ export class AccountsController {
     return await this.accountsService.getAccountById(req.params.id, req.user.id);
   };
 
+  @ApiBody({type: AccountDto})
+  @ApiResponse({status: 201, description: 'Create Account successfully', type: ResponseDto})
   @Post()
   @UsePipes(new ValidationPipe({transform: true}))
   async createAccount(@Body() accountDto: AccountDto): Promise<ResponseDto> {
@@ -49,6 +68,10 @@ export class AccountsController {
     return response;
   }
 
+  @ApiHeader({ name: 'Authorization', description: 'accessToken' })
+  @ApiOkResponse({description: 'update', type: ResponseDto})
+  @ApiParam({name: 'uuid', description: '{id} is uuid'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(@Request() req): Promise<ResponseDto> {
@@ -58,6 +81,10 @@ export class AccountsController {
     return await this.accountsService.updateAccount(req.params.id, req.body.email, req.body.password);
   }
 
+  @ApiHeader({ name: 'Authorization', description: 'accessToken' })
+  @ApiOkResponse({description: 'deleted'})
+  @ApiParam({name: 'uuid', description: '{id} is uuid'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteById(@Request() req): Promise<any> {
