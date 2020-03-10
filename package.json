@@ -88,8 +88,11 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "reporters": ["jest-html-reporter"],
-    "testResultsProcessor": "jest-html-reporter"
+    "testResultsProcessor": "jest-html-reporter",
+    "reporters": [["jest-html-reporter", {
+      "pageTitle": "Test Report",
+      "includeFailureMsg": true
+    }]]
   },
   "repository": {
     "type": "git",
