@@ -5,12 +5,10 @@ import {AccountsModule} from './account/accounts.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
-import {ConfigModule} from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 @Module({
   controllers: [AppController],
   providers: [AppService, {provide: APP_PIPE, useClass: ValidationPipe}],
@@ -26,6 +24,7 @@ import { APP_PIPE } from '@nestjs/core';
     })
   ],
 })
+
 export class AppModule implements NestModule {
   constructor(private readonly connection: Connection) {}
   configure(consumer: MiddlewareConsumer): any {

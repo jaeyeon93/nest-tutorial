@@ -91,7 +91,7 @@ export class AccountsController {
   async deleteById(@Request() req): Promise<any> {
     console.log(`DELETE /accounts/:id param ${JSON.stringify(req.params)}`);
     if (!this.accountsService.compareUserId(req.params.id, req.user.id))
-      throw new UnauthorizedException("삭제할 권한 없습니다.");
+      throw new UnauthorizedException("삭제할 권한이 없습니다.");
     return await this.accountsService.remove(req.params.id);
   }
 }

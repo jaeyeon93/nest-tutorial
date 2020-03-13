@@ -87,7 +87,12 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testResultsProcessor": "jest-html-reporter",
+    "reporters": [["jest-html-reporter", {
+      "pageTitle": "Test Report",
+      "includeFailureMsg": true
+    }]]
   },
   "repository": {
     "type": "git",
