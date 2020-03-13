@@ -67,6 +67,17 @@ describe('account controller e2e test', () => {
       });
   });
 
+  test('Login Fail', async (done) => {
+    request(app.getHttpServer())
+      .get('/accounts')
+      .query({'email': 'test@email.com', 'password':'S1234567'})
+      .expect(401)
+      .end((err, res) => {
+        expect(res.body.message).toBe('Password is wrong');
+      });
+    done();
+  })
+
   afterEach(async (done) => {
     request(app.getHttpServer())
       .delete(`/accounts/${id}`)
