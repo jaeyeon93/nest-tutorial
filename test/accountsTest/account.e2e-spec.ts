@@ -4,7 +4,7 @@ import { AppModule } from '../../src/app.module';
 import * as request from 'supertest';
 import exp = require('constants');
 
-describe('account controller e2e test', () => {
+describe('Account E2E 테스트', () => {
   let app: INestApplication;
   let id: string;
   let accessToken: string;
@@ -74,8 +74,20 @@ describe('account controller e2e test', () => {
       .expect(401)
       .end((err, res) => {
         expect(res.body.message).toBe('Password is wrong');
+        done();
       });
-    done();
+  });
+
+  test('Token이 다를때', async (done) => {
+    request(app.getHttpServer())
+      .get(`/accounts/${id}`)
+      .set('Authorization', 'Bearer ' + 'wrong token')
+      .expect(401)
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res.body.error).toBe('Unauthorized');
+        done();
+      });
   })
 
   afterEach(async (done) => {
@@ -142,6 +154,18 @@ describe('PUT /accounts/:id', () => {
         if (err) throw err;
         accessToken = res.body.accessToken;
         expect(res.body.email).toBe('update@gmail.com');
+        done();
+      })
+  }, 10000);
+
+  test('업데이트할때, token이 다른 경우', async (done) => {
+    request(app.getHttpServer())
+      .put(`/accounts/${id}`)
+      .set('Authorization', 'Bearer ' + 'accessToken')
+      .expect(401)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.error).toBe('Unauthorized');
         done();
       })
   }, 10000);
