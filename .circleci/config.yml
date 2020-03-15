@@ -6,7 +6,7 @@ jobs:
         environment:
           ENFILE: $ENFILE
       - image: mysql:5.7
-        command: command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
         environment:
           MYSQL_USER: root
           MYSQL_DATABSE: sign
