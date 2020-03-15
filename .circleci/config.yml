@@ -5,6 +5,11 @@ jobs:
       - image: circleci/node:10
         environment:
           ENFILE: $ENFILE
+      - image: mysql:5.7
+        environment:
+          MYSQL_USER: root
+          MYSQL_DATABSE: sign
+          MYSQL_PASSWORD: ${DB_PASSWORD}
     steps:
       - checkout
       - run: npm install
