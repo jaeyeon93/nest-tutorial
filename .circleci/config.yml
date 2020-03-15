@@ -6,6 +6,7 @@ jobs:
         environment:
           ENFILE: $ENFILE
       - image: mysql:5.7
+        command: command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
         environment:
           MYSQL_USER: root
           MYSQL_DATABSE: sign
@@ -13,7 +14,22 @@ jobs:
           MYSQL_PASSWORD: $DB_PASSWORD
     steps:
       - checkout
-      - run: cat $DB_PASSWORD
+      - run:
+          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+            nc -z 127.0.0.1 3306 && echo Success && exit 0
+            echo -n .
+            sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            sudo apt-get install default-mysql-client
+            mysql -h 127.0.0.1 -u user -p 12345 test_db < ../setup.sql
       - run: npm install
       - run: echo -e $ENVFILE >> .env
       - run: node -v
