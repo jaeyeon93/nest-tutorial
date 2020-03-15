@@ -9,12 +9,11 @@ jobs:
         environment:
           MYSQL_USER: root
           MYSQL_DATABSE: sign
-          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-          MYSQL_PASSWORD: ${DB_PASSWORD}
+          MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+          MYSQL_PASSWORD: $DB_PASSWORD
     steps:
       - checkout
-      - run: cat ${DB_PASSWORD}
-      - run: echo ${ENVFILE}
+      - run: cat $DB_PASSWORD
       - run: npm install
       - run: echo -e $ENVFILE >> .env
       - run: node -v
