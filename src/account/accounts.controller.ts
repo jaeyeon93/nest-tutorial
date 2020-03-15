@@ -32,7 +32,7 @@ export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {};
 
   @Get('all')
-  async getAccountsById(): Promise<Account[]> {
+  async getAllAccounts(): Promise<Account[]> {
     console.log(`GET /accounts/all called`);
     return await this.accountsService.findAll();
   }
