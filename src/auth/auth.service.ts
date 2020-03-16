@@ -14,8 +14,6 @@ export class AuthService {
 
   // Token에 있는 email과 실제 email을 비교.
   async validateAccount(payload: JwtPayload): Promise<any> {
-    console.log(`validate account ${payload}`);
-    console.log(`payload email : ${payload.email}`);
     const account: Account = await this.accountsService.findByEmail(payload.email);
     if (account.getEmail() == payload.email) {
       console.log(`validateAccount Success`);

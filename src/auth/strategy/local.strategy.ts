@@ -16,7 +16,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   // @UseGuard에서('local')을 Strategy로 선택한 controller에 대해서 동작
   // 처음 request가 들어가면 request에 대한 검증을 한다.
   async validate(email: string, password: string): Promise<any> {
-    console.log(`local strategy validate`);
     const payload: JwtPayload = {email};
     const account = await this.authService.validateAccount(payload);
     if (!account)
