@@ -22,12 +22,10 @@ export class AccountsService {
   }
 
   async findAll(): Promise<Account[]> {
-    console.log(`find all method called`);
     return await this.accountsRepository.find();
   }
 
   async findOne(id: string): Promise<Account> {
-    console.log(`findOne method called ${id}`);
     return await this.accountsRepository.findOne(id);
   }
 
@@ -42,7 +40,6 @@ export class AccountsService {
 
   async remove(id: string): Promise<any> {
     await this.accountsRepository.delete(id);
-    console.log(`삭제됨`);
     return {"message":"deleted"};
   }
 

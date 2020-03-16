@@ -12,4 +12,3 @@ jobs:
       - run: node -v
       - run: cat .env
       - run: npm run lint
-      - run: npm run test
